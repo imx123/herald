@@ -2,11 +2,14 @@
 // Official repositories declared in settings.gradle.kts remain fallbacks.
 beforeSettings { settings ->
     settings.pluginManagement.repositories {
-        // Keep the KSP marker and implementation in one mirror; mixed metadata
-        // from the Aliyun plugin mirror failed on the fork's clean CI cache.
+        // Resolve the KSP marker/implementation and Compose Unstyled variants
+        // together; these groups failed to resolve in the Aliyun CI cache.
         maven {
             url = 'https://repo.huaweicloud.com/repository/maven/'
-            content { includeGroup('com.google.devtools.ksp') }
+            content {
+                includeGroup('com.google.devtools.ksp')
+                includeGroup('com.composables')
+            }
         }
         maven { url = 'https://maven.aliyun.com/repository/google' }
         maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' }
@@ -15,7 +18,10 @@ beforeSettings { settings ->
     settings.dependencyResolutionManagement.repositories {
         maven {
             url = 'https://repo.huaweicloud.com/repository/maven/'
-            content { includeGroup('com.google.devtools.ksp') }
+            content {
+                includeGroup('com.google.devtools.ksp')
+                includeGroup('com.composables')
+            }
         }
         maven { url = 'https://maven.aliyun.com/repository/google' }
         maven { url = 'https://maven.aliyun.com/repository/public' }

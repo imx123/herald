@@ -33,14 +33,6 @@ jobs:
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
-      # Lint fails on any issue that isn't in androidApp/lint-baseline.xml. --continue reports the tests and
-      # lint together instead of stopping at the first failure.
-      - name: Test, build and lint
-        run: >
-          ./gradlew --no-daemon --continue --init-script scripts/android-mirrors.init.gradle
-          :shared:core:testAndroidHostTest :shared:designsystem:testAndroidHostTest :shared:ui:testAndroidHostTest :shared:wearlink:testAndroidHostTest
-          :androidApp:assembleDebug :androidApp:lintDebug :wearApp:testDebugUnitTest :wearApp:assembleDebug :wearApp:lintDebug
-
       # The debug build above cannot catch reflection callbacks removed by R8.
       - name: Build and check minified math rendering
         run: |
@@ -52,6 +44,14 @@ jobs:
         with:
           name: herald-matrix-fix-dev
           path: androidApp/build/outputs/apk/dev/androidApp-dev.apk
+
+      # Lint fails on any issue that isn't in androidApp/lint-baseline.xml. --continue reports the tests and
+      # lint together instead of stopping at the first failure.
+      - name: Test, build and lint
+        run: >
+          ./gradlew --no-daemon --continue --init-script scripts/android-mirrors.init.gradle
+          :shared:core:testAndroidHostTest :shared:designsystem:testAndroidHostTest :shared:ui:testAndroidHostTest :shared:wearlink:testAndroidHostTest
+          :androidApp:assembleDebug :androidApp:lintDebug :wearApp:testDebugUnitTest :wearApp:assembleDebug :wearApp:lintDebug
 
       - name: Lint report
         if: failure()
