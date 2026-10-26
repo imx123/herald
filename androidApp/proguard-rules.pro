@@ -2,6 +2,14 @@
 # Ktor / OkHttp optional dependencies
 -dontwarn org.slf4j.**
 
+# Matrix environments expand through NewCommandMacro, whose constructor and
+# executeMacro method JLaTeXMath finds by reflection. R8 otherwise removes them:
+# simple formulas still render, but pmatrix/bmatrix/cases fall back to TeX source.
+-keep class org.scilab.forge.jlatexmath.NewCommandMacro {
+    public <init>();
+    public java.lang.String executeMacro(org.scilab.forge.jlatexmath.TeXParser, java.lang.String[]);
+}
+
 # Comments on a selection read every text in the selection container by this name (CommentSelection.android.kt).
 -keepclassmembers class androidx.compose.foundation.text.selection.SelectionState {
     public java.util.List getSelectableTexts();

@@ -4,6 +4,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
   pull_request:
@@ -36,9 +37,21 @@ jobs:
       # lint together instead of stopping at the first failure.
       - name: Test, build and lint
         run: >
-          ./gradlew --no-daemon --continue
+          ./gradlew --no-daemon --continue --init-script scripts/android-mirrors.init.gradle
           :shared:core:testAndroidHostTest :shared:designsystem:testAndroidHostTest :shared:ui:testAndroidHostTest :shared:wearlink:testAndroidHostTest
           :androidApp:assembleDebug :androidApp:lintDebug :wearApp:testDebugUnitTest :wearApp:assembleDebug :wearApp:lintDebug
+
+      # The debug build above cannot catch reflection callbacks removed by R8.
+      - name: Build and check minified math rendering
+        run: |
+          ./gradlew --no-daemon --init-script scripts/android-mirrors.init.gradle :androidApp:assembleDev -PappVersion=0.13.0-matrix.1
+          python3 scripts/check-math-reflection.py androidApp/build/outputs/apk/dev/androidApp-dev.apk
+
+      - name: Minified phone APK
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: herald-matrix-fix-dev
+          path: androidApp/build/outputs/apk/dev/androidApp-dev.apk
 
       - name: Lint report
         if: failure()

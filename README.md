@@ -1,3 +1,7 @@
+> Validation environment: Windows x64 for APK static inspection; Ubuntu on GitHub Actions for builds. Physical Android rendering verification is pending.
+>
+> [中文说明](README.zh-CN.md) · This fork fixes matrix formulas falling back to TeX in minified builds. CI uploads a **Herald Dev** APK that installs alongside the upstream app; sign in to your existing gateway after installing it.
+
 <div align="center">
 
 <img src="docs/logo.svg" alt="" width="96" height="96">

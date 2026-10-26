@@ -10,6 +10,7 @@ captures/
 .cxx/
 *.apk
 *.aab
+__pycache__/
 
 # Local release signing (see androidApp/build.gradle.kts)
 keystore.properties

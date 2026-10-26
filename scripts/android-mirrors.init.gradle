@@ -1,0 +1,13 @@
+// Prefer domestic mirrors without changing the upstream repository settings.
+// Official repositories declared in settings.gradle.kts remain fallbacks.
+beforeSettings { settings ->
+    settings.pluginManagement.repositories {
+        maven { url = 'https://maven.aliyun.com/repository/google' }
+        maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+    }
+    settings.dependencyResolutionManagement.repositories {
+        maven { url = 'https://maven.aliyun.com/repository/google' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+    }
+}
